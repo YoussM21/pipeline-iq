@@ -14,7 +14,7 @@ function onStageChange(e: Event) {
 </script>
 
 <template>
-  <div class="card">
+  <div class="card" draggable="true" @dragstart="(e) => e.dataTransfer?.setData('dealId', String(deal.id))">
     <div class="name">{{ deal.name }}</div>
     <div class="company">{{ deal.company }}</div>
     <div class="row">

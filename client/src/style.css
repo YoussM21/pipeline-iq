@@ -35,7 +35,8 @@ input, select { font-family: inherit; }
 .chart h3 { margin: 0 0 12px; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
 
 .board { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
-.column { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px; min-height: 120px; }
+.column { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px; min-height: 120px; transition: border-color 0.15s, background 0.15s; }
+.column.drag-over { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--surface)); }
 .column h2 { font-size: 13px; margin: 4px 6px 10px; display: flex; justify-content: space-between; color: var(--muted); }
 .column h2 .count { background: var(--surface-2); border-radius: 10px; padding: 1px 8px; font-size: 11px; }
 
