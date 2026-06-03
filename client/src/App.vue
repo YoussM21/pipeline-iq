@@ -33,6 +33,10 @@ function close() {
       <div class="brand">Pipeline<span>IQ</span></div>
       <div class="controls">
         <input class="search" v-model="store.search" placeholder="Search deals, companies, owners…" />
+        <select class="owner-select" v-model="store.ownerFilter">
+          <option value="">All owners</option>
+          <option v-for="o in store.owners" :key="o" :value="o">{{ o }}</option>
+        </select>
         <button class="btn" @click="openNew">+ New deal</button>
       </div>
     </div>

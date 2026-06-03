@@ -10,13 +10,18 @@ export const useDealsStore = defineStore("deals", () => {
   const loading = ref(false);
   const error = ref<string | null>(null);
   const search = ref("");
+  const ownerFilter = ref("");
+
+  const owners = computed(() => [...new Set(deals.value.map((d) => d.owner))].sort());
 
   const filtered = computed(() => {
     const q = search.value.trim().toLowerCase();
-    if (!q) return deals.value;
-    return deals.value.filter(
-      (d) => d.name.toLowerCase().includes(q) || d.company.toLowerCase().includes(q) || d.owner.toLowerCase().includes(q)
-    );
+    const o = ownerFilter.value;
+    return deals.value.filter((d) => {
+      if (o && d.owner !== o) return false;
+      if (!q) return true;
+      return d.name.toLowerCase().includes(q) || d.company.toLowerCase().includes(q) || d.owner.toLowerCase().includes(q);
+    });
   });
 
   const byStage = computed<Record<Stage, Deal[]>>(() => {
@@ -58,5 +63,5 @@ export const useDealsStore = defineStore("deals", () => {
     await editDeal(id, { stage });
   }
 
-  return { deals, stats, loading, error, search, filtered, byStage, refresh, addDeal, editDeal, removeDeal, moveDeal };
+  return { deals, stats, loading, error, search, ownerFilter, owners, filtered, byStage, refresh, addDeal, editDeal, removeDeal, moveDeal };
 });
