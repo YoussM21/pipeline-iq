@@ -1,41 +1,24 @@
 # PipelineIQ
 
-A sales pipeline dashboard: track deals through stages (Lead → Contacted → Quoted → Won/Lost),
-see live pipeline metrics, and manage deals with full CRUD. Built as a small, production-shaped
-full-stack app.
-
-## Stack
-
-- **Frontend:** Vue 3 (Composition API, `<script setup>`) · TypeScript · Pinia · Vite
-- **Backend:** Node · Express · TypeScript · REST API
-- **Tooling:** Vite, vue-tsc, end-to-end TypeScript
+A sales pipeline dashboard for tracking deals from first contact to close. Built as a full-stack app with a Vue 3 frontend and a Node/Express backend.
 
 ## Features
 
-- Kanban-style board grouped by pipeline stage
-- Create / edit / delete deals with input validation (client + server)
-- Move a deal between stages inline (PATCH)
-- Live summary metrics (open pipeline value, won value, win rate, total deals)
-- Server-computed "value by stage" chart (hand-rolled SVG, no chart library)
-- Text search across deal name, company, and owner
+- Kanban board with deals grouped by stage (Lead → Contacted → Quoted → Won/Lost)
+- Drag and drop cards between stages
+- Filter by owner and search across deal name, company, and owner
+- Create, edit, and delete deals with validation on both client and server
+- Summary metrics: open pipeline value, won value, win rate, and total deals
+- Value-by-stage bar chart
 
-## REST API
+## Stack
 
-| Method | Route | Purpose |
-| ------ | ----- | ------- |
-| GET    | `/api/deals`        | List all deals |
-| GET    | `/api/deals/stats`  | Aggregated pipeline metrics |
-| POST   | `/api/deals`        | Create a deal (validated) |
-| PATCH  | `/api/deals/:id`    | Partial update (e.g. move stage) |
-| DELETE | `/api/deals/:id`    | Delete a deal |
+- **Frontend:** Vue 3, TypeScript, Pinia, Vite
+- **Backend:** Node.js, Express, TypeScript
 
-Data lives in an in-memory store seeded at startup, accessed only through a small
-repository layer (`server/src/db.ts`) so it can be swapped for SQLite/Postgres
-without touching the routes.
+## Running locally
 
-## Run locally
-
-Two terminals:
+Start the API and the client in two separate terminals:
 
 ```bash
 # Terminal 1 — API on :3001
@@ -43,26 +26,26 @@ cd server
 npm install
 npm run dev
 
-# Terminal 2 — client on :5173 (proxies /api to :3001)
+# Terminal 2 — client on :5173
 cd client
 npm install
 npm run dev
 ```
 
-Open http://localhost:5173
+Open http://localhost:5173.
 
-## Deploy (Vercel/Netlify + Render)
+## Deploying
 
-**Frontend → Vercel or Netlify**
-- Root directory: `client`
-- Build command: `npm run build`
-- Output directory: `dist`
-- Set env var `VITE_API_URL` to your deployed API URL (e.g. `https://pipeline-iq-api.onrender.com`)
+The project is split into two services: the Vue client on Vercel and the Express API on Render. Config files for both are included at the repo root (`vercel.json`, `render.yaml`).
 
-**Backend → Render (free web service)**
-- Root directory: `server`
-- Build command: `npm install && npm run build`
-- Start command: `npm start`
+**Backend → Render**
 
-> The server also serves the built client from `client/dist` if present, so you can
-> alternatively deploy both as a single service.
+1. Connect the repo on [render.com](https://render.com) — it will detect `render.yaml` automatically
+2. Deploy and copy the service URL (e.g. `https://pipeline-iq-api.onrender.com`)
+
+**Frontend → Vercel**
+
+1. Import the repo on [vercel.com](https://vercel.com) — it will detect `vercel.json` automatically
+2. Add one environment variable before deploying:
+   - `VITE_API_URL` → your Render service URL
+3. Deploy
